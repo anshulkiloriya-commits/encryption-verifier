@@ -1,6 +1,4 @@
-import os
-# Used to generate cryptographically secure random bytes — needed for
-# the IV (Initialization Vector) in AES-CBC mode.
+
 
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 # Cipher     → the main object used to actually perform encryption/decryption
@@ -17,9 +15,7 @@ from cryptography.hazmat.primitives import hashes
 # (16 or 32 bytes) from the user's arbitrary-length typed key text.
 # https://cryptography.io/en/latest/hazmat/primitives/cryptographic-hashes/#sha-1
 
-from dataclasses import dataclass
-# Used to define a clean, named structure (AESResult) to return from
-# our encryption function — instead of returning a plain unlabeled tuple.
+
 
 
 def derive_key(key_text: str, key_length: int) -> bytes:
@@ -38,11 +34,8 @@ def derive_key(key_text: str, key_length: int) -> bytes:
     # --- Step 1: Validate the requested key length ---
     # AES only supports specific key sizes. We only support 128 and 256
     # here (matches what the PRD scoped for this project).
-    if key_length == 128 or key_length == 256:
-        print("Valid length")
-    else:
-        print("Invalid length")
-        return
+   
+    if key_length not in (128, 256 ): raise ValueError(f"key_length must be 128 or 256, got {key_length}")
 
     # --- Step 2: Convert text to bytes ---
     # SHA-256 (and all crypto operations) work on raw bytes, not Python
